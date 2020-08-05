@@ -1,0 +1,15 @@
+import express from 'express'; 
+
+
+const app = express();
+
+app.get('/users', (request, response) => {
+
+    const users = [
+        { 'name': 'erick', 'idade': 26}
+    ]
+
+    return response.send(users);
+});
+
+app.listen(3333);

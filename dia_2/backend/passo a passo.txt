@@ -1,0 +1,104 @@
+* Iniciar a aplicação
+
+- npm init -y 
+
+* Criar uma pasta src que vai ter todos os fontes 
+* Criar um server.ts (que vai ser a porta de entrada da aplicação)
+
+* Instalar o typeScript -D 
+
+npm install typeScript 
+
+* Criar o arquivo de configurações do typescript 
+
+- npx tsc --init 
+
+
+Nesse momento teremos:
+-node_modules
+-src 
+--server.ts
+-package-lock.json
+-package.json
+-tsconfig.json
+
+* Acesse o tsconfig e modifique o target para es2017. 
+
+* Instale: npm install ts-node-dev -D (ela vai permitir hot reload)
+
+
+# Hello World 
+
+- insira um cosole.log("Hello World"); no arquivo server.ts
+- edite o arquivo package.json para ter uma sessão de scripts com o seguinte: 
+
+"scripts": {
+    "start": "tsnd --transpile-only --ignore-watch node_modules --respawn src/server.ts"
+}
+
+tsnd: é o comando para rodar nossos sistema typeScript
+--transpile-only: apenas transpila o código, não verifica se existem erros
+src/server.ts: é o nome do arquivo de entrada da aplicação
+--ignore-watch node_modules: isso indica que não deve tentar converter códigos dentro da pasta node_modules
+--respawn: faz o hot reload em toda modificação do código
+
+
+- execute para testar: npm start
+
+
+* Instale: 
+
+- express:  npm install express (Dizem que ele é um microframework pq tem algumas poucas funcionalidades)
+   import express from 'express'; // ele vai dar um erro pq não é desenvolvido com typescript, então precisamos instalar o @types dele. Sempre que ocorrer isso com um modulo instale o pacote de tipos daquele modulo como: @type/nome do modulo
+
+    npm install @types/express -D 
+
+
+Escreva a primeira versão do nosso server.ts e teste a rota definida
+
+
+* seguindo, instale o insomia que e uma aplicação similar ao Postman para fazer requisições para as APIs 
+-- tu consegues criar um workspace para ele  
+
+
+
+O Objeto request do express: 
+
+body: corpo da requisição, tem os dados enviados no body
+Route params /users/:id (request.params): identificar o recuro 
+Query params (request.query): paginação, filtro, ordenação, etc ... 
+
+
+
+# Instalando os dbs para a gente conseguir simular o banco de dados 
+
+- npm i knex sqlite3
+
+knex: pretty builder, escrever sql usando js 
+sqlite3: um banco mais simples, driver de conexão com o banco
+
+- Crie dentro da pasta src chamada database (dentro vai ter nosso arquivo de banco de dados) 
+
+- crie o connection.ts 
+- Crie as migrations (arquivos que controlam as versões do banco de dados), dentro delas que definimos o que queremos fazer no banco: criar uma tabela, alterar, etc... 
+-- para isso execute: 
+
+
+-- crie a pasta migrations dentro do database e dentro dela crie um arquivo javascript 
+--- 00_create_user.ts 
+
+---- Após criar a migration vamos escrever um comando para executar as migrations, isso necessário pq o knex não sabe TS.
+"knex:migrate": "knex --knexfile knexfile.ts migrate:latest"
+"knex:migrate:rollback": "knex --knexfile knexfile.ts migrate:rollback"
+execut npm run knex:migrate
+
+em seguida pode instalar o visual sqlite que voce consegue ver as tabelas. sqliteexplorer, e depois da pra ctrl +  shift + p e fOCUS ON sqlITE EXPLOrer View, isso vai abrir a view do banco de dados da nossa aplicação. 
+
+
+
+### Em src vamos criar um arquivo routes 
+
+
+
+**** Por fim instale o cors
+e no app app.use(cors()); 
